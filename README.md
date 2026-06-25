@@ -8,16 +8,104 @@ A GreenOps observability pipeline that transforms AWS Cost and Usage Report (CUR
 
 This project demonstrates how sustainability can be treated as a **first-class observability signal**.
 
-This project demo is inspired by the OSS Spruce project: https://github.com/digitalpebble/spruce
+## 🧩 Role of Spruce in this GreenOps Architecture
+
+This project follows a cloud-native observability pattern inspired by open source ecosystem tools, where data generation, processing, and observability are clearly separated into independent layers.
+
+Within this architecture, **Spruce is used strictly as a synthetic data generation and normalization layer**.
+
+What is Spruce? Check it out: 👉 https://opensourcegreenops.cloud/latest/, 👉 https://github.com/digitalpebble/spruce.
 
 ---
 
-## ✨ Key Ideas
+### 🌱 Spruce as the Data Generation Layer
 
-- Treat cloud cost as a metric
-- Derive carbon emissions from usage data
-- Use observability tooling for sustainability insights
-- Keep the stack lightweight and reproducible
+Spruce acts as a reproducible pipeline that simulates an AWS Cost and Usage Report (CUR)-like dataset using Apache Spark.
+
+Its responsibilities in this demo are:
+
+- Generating synthetic CUR-like cost and usage data
+- Applying basic normalization and structuring of cloud billing fields
+- Producing a columnar dataset in **Parquet format**
+- Emitting a dataset compatible with downstream observability pipelines
+
+The resulting dataset represents a simplified but realistic approximation of cloud billing telemetry, typically found in enterprise FinOps environments.
+
+---
+
+### 📦 Output Contract
+
+Spruce produces a structured dataset containing cloud usage and cost attributes such as:
+
+- `product_region_code`
+- `line_item_product_code`
+- `line_item_usage_account_id`
+- `line_item_usage_start_date`
+- `line_item_usage_end_date`
+- `line_item_unblended_cost`
+
+This dataset acts as the **source of truth for downstream GreenOps metrics generation**.
+
+---
+
+### 🚫 What Spruce is NOT Responsible For
+
+To maintain clear separation of concerns, Spruce does not participate in:
+
+- Metrics generation (Prometheus/VictoriaMetrics format)
+- Time-series ingestion or storage
+- Carbon intensity calculations
+- Observability visualization (Grafana dashboards)
+- Any form of alerting or querying layer
+
+---
+
+### 🔄 Downstream Flow
+
+After Spruce completes dataset generation, the pipeline continues as follows:
+
+1. **Spruce (Batch Processing Layer)**
+   - Produces CUR-like Parquet dataset
+
+2. **Python Transformation Layer (Metrics Adapter)**
+   - Converts cost data into Prometheus-compatible metrics
+   - Aggregates by service, region, and account
+   - Enriches metrics with CO₂ emission factors
+
+3. **VictoriaMetrics (Observability Storage Layer)**
+   - Stores time-series cost and carbon metrics
+   - Provides PromQL-compatible query interface
+
+4. **Grafana (Visualization Layer)**
+   - Displays GreenOps dashboards
+   - Enables cost and carbon observability across services
+
+---
+
+### 🧭 Design Principle
+
+This architecture follows a typical separation of concerns:
+
+- **Batch/Data Generation Layer → Spruce**
+- **Metrics Transformation Layer → Python exporter**
+- **Time-Series Storage Layer → VictoriaMetrics**
+- **Visualization Layer → Grafana**
+
+This separation ensures the system remains:
+- Modular
+- Reproducible
+- Observability-native
+- Vendor-neutral
+
+---
+
+### 🌍 In this GreenOps demo:
+
+- Spruce is the **data plane simulator**
+- VictoriaMetrics is the **metrics backbone**
+- Grafana is the **insight layer**
+
+Together, they form a lightweight cloud-native observability pipeline for cost and carbon intelligence.
 
 ---
 
