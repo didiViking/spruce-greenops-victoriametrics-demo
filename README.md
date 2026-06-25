@@ -164,6 +164,11 @@ Panels:
 - 🌍 CO₂ by region (Heatmap)
 - ⚡ Efficiency score (Stat panel)
 
+Below an example from my GreenOps CUR Dashboard
+
+<img width="1689" height="817" alt="Screenshot 2026-06-25 at 10 07 49" src="https://github.com/user-attachments/assets/fdda7ce0-d409-424f-b26f-035f1ffbb735" />
+
+
 ---
 
 ## 🌍 Why this matters
