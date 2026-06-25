@@ -1,0 +1,52 @@
+{
+  "title": "GreenOps CUR Dashboard",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Cost Total",
+      "targets": [
+        {
+          "expr": "sum(aws_cost_total)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "CO2 Estimate",
+      "targets": [
+        {
+          "expr": "sum(aws_co2_estimate)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Cost by Region",
+      "targets": [
+        {
+          "expr": "sum by (region) (aws_cost_region)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Cost by Service",
+      "targets": [
+        {
+          "expr": "sum by (service) (aws_cost_service)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "CO2 by Region",
+      "targets": [
+        {
+          "expr": "sum by (region) (aws_co2_estimate)"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}
