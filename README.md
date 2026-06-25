@@ -7,6 +7,7 @@
 A GreenOps observability pipeline that transforms AWS Cost and Usage Report (CUR)-like data into cost and carbon metrics, then visualizes them using **VictoriaMetrics + Grafana**.
 
 This project demonstrates how sustainability can be treated as a **first-class observability signal**.
+This project demo is inspired by the OSS Spruce project: https://github.com/digitalpebble/spruce
 
 ---
 
