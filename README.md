@@ -48,18 +48,6 @@ This dataset acts as the **source of truth for downstream GreenOps metrics gener
 
 ---
 
-### 🚫 What Spruce is NOT Responsible For
-
-To maintain clear separation of concerns, Spruce does not participate in:
-
-- Metrics generation (Prometheus/VictoriaMetrics format)
-- Time-series ingestion or storage
-- Carbon intensity calculations
-- Observability visualization (Grafana dashboards)
-- Any form of alerting or querying layer
-
----
-
 ### 🔄 Downstream Flow
 
 After Spruce completes dataset generation, the pipeline continues as follows:
@@ -255,6 +243,17 @@ Expected metrics:
 - aws_cost_region
 - aws_co2_estimate
 
+Example from vmui query `sum(aws_cost_total) / sum(aws_co2_estimate)`
+
+
+<img width="1687" height="819" alt="Screenshot 2026-06-25 at 11 55 51" src="https://github.com/user-attachments/assets/470dd0b1-233c-40d9-9d29-ef84cd93b42f" />
+
+Example from vmui's Cardinality Explorer for `aws_co2_estimate` metric
+
+<img width="1682" height="971" alt="Screenshot 2026-06-25 at 12 02 13" src="https://github.com/user-attachments/assets/f37bdee6-e8d8-4ca0-bc78-c6ae280fd885" />
+
+
+
 ---
 
 ### 7. Start Grafana
@@ -317,6 +316,54 @@ Below an example from my GreenOps CUR Dashboard
 
 
 ---
+
+## ⚠️ Disclaimer on Metrics, Queries, and Data Model
+
+This project uses a set of custom-defined observability metrics and queries to demonstrate a GreenOps pipeline built on open source tools.
+
+The PromQL queries used in Grafana and VictoriaMetrics (such as cost aggregation, regional breakdowns, and carbon efficiency calculations) are **not sourced from Spruce or any upstream project**.
+
+### 🧠 Origin of the metrics and queries
+
+The following elements were designed specifically for this demo:
+
+- Metric names:
+  - `aws_cost_total`
+  - `aws_cost_service`
+  - `aws_cost_region`
+  - `aws_co2_estimate`
+
+- Derived GreenOps model:
+  - `aws_co2_estimate = aws_cost_total × region_emission_factor`
+
+- Observability queries used in VictoriaMetrics and Grafana dashboards:
+  - cost aggregation queries
+  - region/service breakdowns
+  - CO₂ estimation queries
+  - efficiency ratio calculations (cost vs carbon)
+
+These were created as part of a **custom GreenOps observability model** built for this demonstration project.
+
+### 🧩 Role of Spruce
+
+Spruce is used only as a **synthetic CUR-like data generator and preprocessing layer**. It is responsible for producing structured cost and usage datasets, but it does not define:
+
+- Prometheus/VictoriaMetrics metric naming
+- Carbon estimation logic
+- Dashboard queries
+- Observability model design
+
+### 🌱 Purpose of this project
+
+This repository is intended as a **reference implementation of GreenOps observability**, showing how:
+
+- cost data can be transformed into metrics
+- carbon impact can be modeled from usage signals
+- open source observability tools can be composed into a sustainability pipeline
+
+It is not intended to replicate or extend Spruce functionality, but to demonstrate how its output can be used in downstream observability systems.
+
+--- 
 
 ## 🌍 Why this matters
 
